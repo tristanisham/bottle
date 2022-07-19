@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{.Title}}</title>
+	<meta name="keywords" content="{{.Keywords}}">
+	<meta name="description" content="{{.Description}}">
+	<link rel="stylesheet" href="/style.css">
+	<link rel="shortcut icon" href="https://deno-avatar.deno.dev/avatar/7e23af.svg" type="image/x-icon">
+
+
+</head>
+
+<body class="dark:bg-neutral-900">
+	<main class="mx-auto pt-2 container">
+		{{template "nav" .}}
+
+		<article id="post" class=" mx-20 prose prose-neutral prose-sm dark:prose-invert md:prose-lg lg:prose-xl">
+			<h1>{{.Post.Title}}</h1>
+			<h2>{{.Post.Subtitle}}</h2>
+			<p>{{.Post.PublishDate}}</p>
+			<hr>
+			<div class="">
+				{{html .Post.Body}}
+			</div>
+		</article>
+	</main>
+</body>
+
+<style>
+	#post {
+		padding-top: 2rem;
+	}
+</style>
+
+</html>
