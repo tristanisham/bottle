@@ -15,13 +15,13 @@
 </head>
 
 <body class="dark:bg-neutral-900">
-	<main class="mx-auto pt-2 container">
+	<main class="mx-auto container">
 		{{template "nav" .}}
 
-		<article id="post" class=" mx-20 prose prose-neutral prose-sm dark:prose-invert md:prose-lg lg:prose-xl">
+		<article id="post" class=" md:mx-20 pb-6 overflow-auto mx-2 pt-2 prose prose-neutral prose-sm dark:prose-invert md:prose-md lg:prose-lg">
 			<h1>{{.Post.Title}}</h1>
 			<h2>{{.Post.Subtitle}}</h2>
-			<p>{{.Post.PublishDate}}</p>
+			<p>{{ymd .Post.PublishDate}}</p>
 			<hr>
 			<div class="">
 				{{html .Post.Body}}
@@ -31,9 +31,6 @@
 </body>
 
 <style>
-	#post {
-		padding-top: 2rem;
-	}
 </style>
 
 </html>

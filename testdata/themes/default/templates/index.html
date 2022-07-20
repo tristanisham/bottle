@@ -13,18 +13,20 @@
 </head>
 
 <body class="dark:bg-neutral-900">
-	<main class="pt-2 mx-auto container">
+	<main class=" mx-auto container">
 		{{template "nav" .}}
-		
-		<div>
+
+		<div class="pt-2">
 			{{range .Posts}}
-			<article class="prose prose-neutral dark:prose-invert md:prose-lg lg:prose-xl">
-				<a href="{{.Slug}}">
-					<div class="title">{{.Title}}</div>
+			<article id="post"
+				class=" md:mx-20 pb-6 overflow-auto mx-2 pt-2 prose prose-neutral prose-sm dark:prose-invert md:prose-md lg:prose-lg">
+				<a href="/{{.Slug}}">
+					<h1>{{.Title}}</h1>
 				</a>
-				<div class="subtitle">{{.Subtitle}}</div>
-				<div class="publishedOn">{{.PublishDate}}</div>
-				<div>
+				<h2>{{.Subtitle}}</h2>
+				<p>{{ymd .PublishDate}}</p>
+				<hr>
+				<div class="">
 					{{html .Body}}
 				</div>
 			</article>
@@ -34,9 +36,8 @@
 	</main>
 
 	<style>
-		.title {
-			font-size: xx-large;
-		}
+
+
 	</style>
 </body>
 

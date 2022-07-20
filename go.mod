@@ -1,4 +1,4 @@
-module bottle
+module git.sr.ht/~atalocke/bottle
 
 go 1.18
 

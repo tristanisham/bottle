@@ -16,35 +16,8 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html"
-	"github.com/radovskyb/watcher"
-	"github.com/russross/blackfriday/v2"
 	"gopkg.in/yaml.v3"
 )
-
-type Settings struct {
-	Title       string   `json:"title" yaml:"title"`
-	Author      string   `json:"author" yaml:"author"`
-	Description string   `json:"description" yaml:"description"`
-	Keywords    []string `json:"keywords" yaml:"keywords"`
-	Theme       string   `json:"theme" yaml:"theme"`
-}
-
-type server struct {
-	settings Settings
-	router   map[string]post
-	mu       sync.Mutex
-}
-
-func (s *server) render(file watcher.Event) {
-	post, err := postFromFile(file.Path)
-	if err != nil {
-		log.Fatal(err)
-	}
-	post.Slug = strings.Split(file.Name(), ".")[0]
-	s.mu.Lock()
-	s.router[file.Name()] = *post
-	s.mu.Unlock()
-}
 
 // Build creates the inital map of existing posts before watcher takes over to handle individual changes.
 func (s *server) Build(path string) error {
@@ -69,60 +42,11 @@ func (s *server) Build(path string) error {
 	return nil
 }
 
-type post struct {
-	Title       string    `json:"title" yaml:"title"`
-	Subtitle    string    `json:"subtitle" yaml:"subtitle"`
-	Author      string    `json:"author" yaml:"author"`
-	Description string    `json:"description" yaml:"description"`
-	Keywords    []string  `json:"keywords" yaml:"keywords"`
-	Body        string    `json:"body" yaml:"body"`
-	Slug        string    `json:"slug" yaml:"slug"`
-	PublishDate time.Time `json:"publish_date" yaml:"publish_date"`
-}
-
-func postFromFile(path string) (*post, error) {
-	raw, err := os.ReadFile(path)
-	if err != nil {
-		return nil, err
-	}
-
-	result := post{}
-
-	frontMatter := make([]string, 0)
-	var body []string
-
-	header_closed := false
-	lines := strings.Split(string(raw), "\n")
-	if lines[0] == "---" {
-		var j int
-		for i := 1; !header_closed; i++ {
-			if lines[i] == "---" {
-				header_closed = true
-				j = i
-				break
-			}
-			frontMatter = append(frontMatter, lines[i])
-		}
-
-		body = lines[j+1:] // Plus 1 to cut out the secondary closing HR
-
-	}
-
-	metadata := strings.Join(frontMatter, "\n")
-	if err := yaml.Unmarshal([]byte(metadata), &result); err != nil {
-		log.Fatalln(err)
-	}
-
-	result.Body = string(blackfriday.Run([]byte(strings.Join(body, "\n")))) // Not safe by design to let user's hack
-
-	return &result, nil
-}
-
 func Start() {
 
 	server := server{
 		settings: Settings{},
-		router:   map[string]post{},
+		router:   map[string]Post{},
 		mu:       sync.Mutex{},
 	}
 	cwd, err := os.Getwd()
@@ -150,9 +74,13 @@ func Start() {
 	// \  /\  /  __/ |_) | /\__/ /  __/ |   \ V /  __/ |
 	//  \/  \/ \___|_.__/  \____/ \___|_|    \_/ \___|_|
 
-	engine := html.New(filepath.Join(cwd, "themes", server.settings.Theme, "templates"), ".html")
+	engine := html.New(filepath.Join(cwd, "themes", server.settings.Theme, "templates"), ".html").Reload(true)
 	engine.AddFunc("html", func(copy string) template.HTML {
 		return template.HTML(copy)
+	})
+	engine.AddFunc("ymd", func(t time.Time) string {
+		year, month, date := t.Date()
+		return fmt.Sprintf("%d/%d/%d", year, month, date)
 	})
 
 	app := fiber.New(fiber.Config{
@@ -166,7 +94,7 @@ func Start() {
 		slug := url.PathEscape(c.Params("slug"))
 		server.mu.Lock()
 		defer server.mu.Unlock()
-		
+
 		if val, ok := server.router[fmt.Sprintf("%s.md", slug)]; ok {
 			return c.Render("post", fiber.Map{
 				"Title":       server.settings.Title,
@@ -176,12 +104,20 @@ func Start() {
 				"Post":        val,
 			})
 		}
-		
-		return c.SendStatus(404)
+
+		c.Status(404)
+		return c.Render("error", fiber.Map{
+			"Title":       server.settings.Title,
+			"Keywords":    strings.Join(server.settings.Keywords, ", "),
+			"Description": server.settings.Description,
+			"Author":      server.settings.Author,
+			"Error":       "404",
+			"Message":     "Post not found",
+		})
 	})
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		posts := make([]post, 0)
+		posts := make([]Post, 0)
 		for _, post := range server.router {
 			posts = append(posts, post)
 		}

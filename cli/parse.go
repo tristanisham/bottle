@@ -1,0 +1,85 @@
+package cli
+
+import (
+	"fmt"
+	"os"
+
+	"git.sr.ht/~atalocke/bottle/server"
+	"gopkg.in/yaml.v3"
+)
+
+func Parse(args []string) error {
+	if len(args) == 0 {
+		Help()
+		return nil
+	}
+
+	switch args[0] {
+	case "init":
+		// Creates the default directories for the program to function.
+		//	* posts
+		//	* public
+
+		cwd, err := os.Getwd()
+		if err != nil {
+			return err
+		}
+		if err := initializeProject(cwd); err != nil {
+			return err
+		}
+
+	// New is a catchall command for generating basic templates and folder structures that a typical user may not remember.
+	// The command works $ bottle new <arg>. Ideally, supported args will be limited but have a high utility:
+	//	* post
+	//	* project
+	case "new":
+		if len(args) >= 2 {
+			switch args[1] {
+			default:
+				if err := os.MkdirAll(args[1], 0775); err != nil {
+					return err
+				}
+				if err := initializeProject(args[1]); err != nil {
+					return err
+				}
+			case "post":
+				name := "my_new_post"
+				if len(args) >= 3 {
+					name = args[2]
+				}
+
+				post, err := createNewPost(name)
+				if err != nil {
+					return err
+				}
+				raw, err := yaml.Marshal(post)
+				if err != nil {
+					return err
+				}
+
+				buff := make([]byte, 0)
+				buff = append(buff, []byte("---\n")...)
+				buff = append(buff, raw...)
+				buff = append(buff, []byte("---\n")...)
+				
+
+				if err := os.WriteFile(fmt.Sprintf("posts/%s.md", name), buff, 0775); err != nil {
+					return err
+				}
+
+			}
+
+		}
+		// TODO: create configuration file and schema
+	// case "build", "brew", "b":
+	// Iterate through ever md file in /posts and render into HTML (memory).
+	// If -o flag is supplied dump out to specified directory.
+	case "serve":
+		// Starts webserver using $BOTTLE_PORT, config.Port, or 8080 in that order.
+		// Watches for file changes so users don't have to restart their blog everytime they add a new post.
+		server.Start()
+	case "help", "--h", "-h":
+		Help()
+	}
+	return nil
+}
