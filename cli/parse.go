@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"git.sr.ht/~atalocke/bottle/server"
@@ -61,12 +62,15 @@ func Parse(args []string) error {
 				buff = append(buff, []byte("---\n")...)
 				buff = append(buff, raw...)
 				buff = append(buff, []byte("---\n")...)
-				
 
 				if err := os.WriteFile(fmt.Sprintf("posts/%s.md", name), buff, 0775); err != nil {
 					return err
 				}
 
+			case "nginx":
+				if err := os.WriteFile("bottle.website", []byte(nginxService()), 0775); err != nil {
+					log.Fatal(err)
+				}
 			}
 
 		}
