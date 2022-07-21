@@ -146,5 +146,9 @@ func postFromFile(path string) (*Post, error) {
 		result.TwPreviewImage = result.SiteImg
 	}
 
+	if result.PublishDate.IsZero() {
+		result.PublishDate = time.Now()
+	}
+	
 	return &result, nil
 }

@@ -77,7 +77,7 @@ func Start(multiProc bool) {
 	// \  /\  /  __/ |_) | /\__/ /  __/ |   \ V /  __/ |
 	//  \/  \/ \___|_.__/  \____/ \___|_|    \_/ \___|_|
 
-	engine := html.New(filepath.Join(cwd, "themes", server.settings.Theme, "templates"), ".html").Reload(true)
+	engine := html.New(filepath.Join(cwd, "themes", server.settings.Theme, "templates"), ".html")
 	engine.AddFunc("html", func(copy string) template.HTML {
 		return template.HTML(copy)
 	})
