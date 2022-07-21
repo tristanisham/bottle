@@ -1,3 +1,5 @@
 bottle
 node_modules
 install.sh
+dist
+build.sh

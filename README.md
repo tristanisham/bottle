@@ -4,11 +4,16 @@
 The friendliest blogging engine
 
 
+## Used By
+
+- [My blog](https://u8.quest)
+
+
 ## Installation
 
-1. Download the platform specific binary from the release page.
-2. Place bottle on path
-3. Get writing!
+    1. Download the platform specific binary from the release page.
+    2. Place bottle on path
+    3. Get writing!
     
 ## Features
 
@@ -16,11 +21,6 @@ The friendliest blogging engine
 - Live edit your blog posts. No more restarting your server.
 - Easy to customize theme system.
 - Works on any platform Go is supported on
-
-
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
 
 
 ## Deployment
@@ -111,4 +111,9 @@ Contributions are always welcome!
 See `contributing.md` for ways to get started.
 
 Please adhere to this project's `code of conduct`.
+
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
 
