@@ -82,7 +82,7 @@ tw_preview_image: ""
 tw_vid_aud_player: ""
 ---
 ```
-Don't worry about missing duplicate fields. Bottle's smart enough to fill in sensible defaults.
+Don't worry about filling all those fields. Bottle's smart enough to fill in sensible defaults.
 All you need to publish a blog post is a Title! 
 ```yaml
 ---
