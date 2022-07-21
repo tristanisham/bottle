@@ -31,6 +31,7 @@ func initializeProject(path string) error {
 		Description: "A blog by Brewmaster",
 		Keywords:    []string{"blog", "bottle", "seo", "brewing"},
 		Theme:       "default",
+		Locale: "en_us",
 	})
 
 	if err != nil {

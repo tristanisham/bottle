@@ -7,18 +7,49 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>{{.Title}}</title>
 	<meta name="keywords" content="{{.Keywords}}">
-	<meta name="description" content="{{.Description}}">
 	<link rel="stylesheet" href="/style.css">
 	<link rel="shortcut icon" href="https://deno-avatar.deno.dev/avatar/7e23af.svg" type="image/x-icon">
-
-
+	<!-- Search Engine -->
+	<meta name="description" content="{{.Description}}">
+	<meta name="image" content="header_img">
+	<!-- Schema.org for Google -->
+	<meta itemprop="name" content="Title">
+	<meta itemprop="description" content="Description">
+	<meta itemprop="image" content="header_img">
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="Title">
+	<meta name="twitter:description" content="Description">
+	<meta name="twitter:site" content="@twitter_handle">
+	<meta name="twitter:creator" content="@tw_author_handle">
+	<meta name="twitter:image:src" content="tw_preview_image">
+	<meta name="twitter:player" content="tw_vid_aud_player">
+	<!-- Twitter - Article -->
+	<!-- Open Graph general (Facebook, Pinterest & Google+) -->
+	<meta name="og:title" content="Title">
+	<meta name="og:description" content="Description">
+	<meta name="og:image" content="logo">
+	<meta name="og:url" content="url">
+	<meta name="og:site_name" content="Site Title">
+	<meta name="og:locale" content="Locale">
+	<meta name="fb:admins" content="fb_user_id">
+	<meta name="fb:app_id" content="fb_app_id">
+	<meta name="og:type" content="article">
+	<!-- Open Graph - Article -->
+	<meta name="article:section" content="section">
+	<meta name="article:published_time" content="...">
+	<meta name="article:author" content="author">
+	<meta name="article:tag" content="keywords">
+	<meta name="article:expiration_time" content="...">
+	<meta name="article:modified_time" content="...">
 </head>
 
 <body class="dark:bg-neutral-900">
 	<main class="mx-auto container">
 		{{template "nav" .}}
 
-		<article id="post" class=" md:mx-20 pb-6 overflow-auto mx-2 pt-2 prose prose-neutral prose-sm dark:prose-invert md:prose-md lg:prose-lg">
+		<article id="post"
+			class=" md:mx-20 pb-6 overflow-auto mx-2 pt-2 prose prose-neutral prose-sm dark:prose-invert md:prose-md lg:prose-lg">
 			<h1>{{.Post.Title}}</h1>
 			<h2>{{.Post.Subtitle}}</h2>
 			<p>{{ymd .Post.PublishDate}}</p>

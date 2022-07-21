@@ -20,6 +20,14 @@ type Settings struct {
 	Description string   `json:"description" yaml:"description"`
 	Keywords    []string `json:"keywords" yaml:"keywords"`
 	Theme       string   `json:"theme" yaml:"theme"`
+	Url         string   `json:"url" yaml:"url"`
+	Locale      string   `json:"locale" yaml:"locale"`
+	FbUserId    string   `json:"fb_user_id" yaml:"fb_user_id"`
+	FbAppId     string   `json:"fb_app_id" yaml:"fb_app_id"`
+	// TwPubHandle is your publication's Twitter handle
+	TwPubHandle string `json:"tw_pub_handle" yaml:"tw_pub_handle"`
+	// TwAuthorHandle is your publication's Twitter handle
+	TwAuthorHandle string `json:"tw_author_handle" yaml:"tw_author_handle"`
 }
 
 func LoadSettings() (*Settings, error) {
@@ -60,6 +68,11 @@ func (s *server) render(file watcher.Event) {
 			log.Panicln(err)
 		}
 	}
+	if len(post.TwAuthorHandle) == 0 {
+		post.TwAuthorHandle = s.settings.TwAuthorHandle
+	}
+	
+	post.ModifiedTime = time.Now()
 	post.Slug = strings.Split(file.Name(), ".")[0]
 	s.mu.Lock()
 	s.router[file.Name()] = *post
@@ -67,14 +80,25 @@ func (s *server) render(file watcher.Event) {
 }
 
 type Post struct {
-	Title       string    `json:"title" yaml:"title"`
-	Subtitle    string    `json:"subtitle" yaml:"subtitle"`
-	Author      string    `json:"author" yaml:"author"`
-	Description string    `json:"description" yaml:"description"`
-	Keywords    []string  `json:"keywords" yaml:"keywords"`
-	Body        string    `json:"body" yaml:"body"`
-	Slug        string    `json:"slug" yaml:"slug"`
-	PublishDate time.Time `json:"publish_date" yaml:"publish_date"`
+	Title          string    `json:"title" yaml:"title"`
+	Subtitle       string    `json:"subtitle" yaml:"subtitle"`
+	Author         string    `json:"author" yaml:"author"`
+	Description    string    `json:"description" yaml:"description"`
+	Keywords       []string  `json:"keywords" yaml:"keywords"`
+	SiteImg        string    `json:"site_img" yaml:"site_img"`
+	Body           string    `json:"body" yaml:"body"`
+	Slug           string    `json:"slug" yaml:"slug"`
+	PublishDate    time.Time `json:"publish_date" yaml:"publish_date"`
+	OgVideo        string    `json:"og_video" yaml:"og_video"`
+	Section        string    `json:"section" yaml:"section"`
+	ModifiedTime   time.Time `json:"modifiedTime" yaml:"modifiedTime"`
+	ExpirationTime time.Time `json:"expirationTime" yaml:"expirationTime"`
+	// TwAuthorHandle is your publication's Twitter handle
+	TwAuthorHandle string `json:"tw_author_handle" yaml:"tw_author_handle"`
+	// TwPreviewImage defaults to SiteImg if not specified
+	TwPreviewImage string `json:"tw_preview_image" yaml:"tw_preview_image"`
+	TwVidAudPlayer string `json:"tw_vid_aud_player" yaml:"tw_vid_aud_player"`
+
 }
 
 func postFromFile(path string) (*Post, error) {
@@ -114,6 +138,10 @@ func postFromFile(path string) (*Post, error) {
 	}
 
 	result.Body = string(blackfriday.Run([]byte(strings.Join(body, "\n")))) // Not safe by design to let user's hack
+
+	if len(result.TwPreviewImage) == 0 {
+		result.TwPreviewImage = result.SiteImg
+	}
 
 	return &result, nil
 }
