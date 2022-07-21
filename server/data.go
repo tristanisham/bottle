@@ -71,7 +71,10 @@ func (s *server) render(file watcher.Event) {
 	if len(post.TwAuthorHandle) == 0 {
 		post.TwAuthorHandle = s.settings.TwAuthorHandle
 	}
-	
+	if len(post.Author) == 0 {
+		post.Author = s.settings.Author
+	}
+
 	post.ModifiedTime = time.Now()
 	post.Slug = strings.Split(file.Name(), ".")[0]
 	s.mu.Lock()

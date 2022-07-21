@@ -77,7 +77,6 @@ func Start(multiProc bool) {
 	// \  /\  /  __/ |_) | /\__/ /  __/ |   \ V /  __/ |
 	//  \/  \/ \___|_.__/  \____/ \___|_|    \_/ \___|_|
 
-
 	engine := html.New(filepath.Join(cwd, "themes", server.settings.Theme, "templates"), ".html").Reload(true)
 	engine.AddFunc("html", func(copy string) template.HTML {
 		return template.HTML(copy)
@@ -86,15 +85,18 @@ func Start(multiProc bool) {
 		year, month, date := t.Date()
 		return fmt.Sprintf("%d/%d/%d", year, month, date)
 	})
-
-	app := fiber.New(fiber.Config{
-		Views: engine,
-		ServerHeader: "Bottle",
-		AppName: fmt.Sprint("Bottle ", "v0.0.4"),
-		Prefork: multiProc,
+	engine.AddFunc("join", func(in []string, sep string) string {
+		return strings.Join(in, sep)
 	})
 
-	// Middleware 
+	app := fiber.New(fiber.Config{
+		Views:        engine,
+		ServerHeader: "Bottle",
+		AppName:      fmt.Sprint("Bottle ", "v0.0.5"),
+		Prefork:      multiProc,
+	})
+
+	// Middleware
 	app.Use(requestid.New())
 	app.Use(logger.New(logger.Config{
 		Format:     "${pid} ${status} - ${method} ${path}\n",
@@ -120,6 +122,12 @@ func Start(multiProc bool) {
 				"Description": server.settings.Description,
 				"Author":      server.settings.Author,
 				"Post":        val,
+				"TwPubHandle": server.settings.TwPubHandle,
+				"URL":         fmt.Sprintf("%s/%s", server.settings.Url, slug),
+				"Locale": server.settings.Locale,
+				"FbUserId": server.settings.FbUserId,
+				"FbAppId": server.settings.FbAppId,
+
 			})
 		}
 

@@ -3,6 +3,7 @@ package cli
 import (
 	_ "embed"
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"time"
@@ -52,6 +53,8 @@ func initializeProject(path string) error {
 		if err := os.WriteFile(filepath.Join(path, "bottle.yaml"), settings, 0775); err != nil {
 			return err
 		}
+	} else {
+		log.Println(filepath.Join(path, "bottle.yaml"), "was not replaced.")
 	}
 
 	return nil

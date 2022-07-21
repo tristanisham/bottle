@@ -5,20 +5,51 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>{{.Title}}</title>
-	<meta name="keywords" content="{{.Keywords}}">
-	<meta name="description" content="{{.Description}}">
+	<title>{{.Post.Title}}</title>
+	<meta name="keywords" content="{{join .Post.Keywords ", "}}">
 	<link rel="stylesheet" href="/style.css">
 	<link rel="shortcut icon" href="https://deno-avatar.deno.dev/avatar/7e23af.svg" type="image/x-icon">
-
-
+	<!-- Search Engine -->
+	<meta name="description" content="{{.Description}}">
+	<meta name="image" content="{{.Post.SiteImg}}">
+	<!-- Schema.org for Google -->
+	<meta itemprop="name" content="{{.Post.Title}}">
+	<meta itemprop="description" content="{{.Post.Description}}">
+	<meta itemprop="image" content="header_img">
+	<!-- Twitter -->
+	<meta name="twitter:card" content="{{.Post.Description}}">
+	<meta name="twitter:title" content="{{.Post.Title}}">
+	<meta name="twitter:description" content="{{.Post.Description}}">
+	<meta name="twitter:site" content="{{.TwPubHandle}}">
+	<meta name="twitter:creator" content={{.Post.TwAuthorHandle}}>
+	<meta name="twitter:image:src" content="{{.Post.TwPreviewImage}}">
+	<meta name="twitter:player" content="{{.Post.TwVidAudPlayer}}">
+	<!-- Twitter - Article -->
+	<!-- Open Graph general (Facebook, Pinterest & Google+) -->
+	<meta name="og:title" content="{{.Post.Title}}">
+	<meta name="og:description" content="{{.Post.Description}}">
+	<meta name="og:image" content="{{.Post.SiteImg}}">
+	<meta name="og:url" content="{{.URL}}">
+	<meta name="og:site_name" content="{{.Title}}">
+	<meta name="og:locale" content="{{.Locale}}">
+	<meta name="fb:admins" content="{{.FbUserId}}">
+	<meta name="fb:app_id" content="{{.FbAppId}}">
+	<meta name="og:type" content="article">
+	<!-- Open Graph - Article -->
+	<meta name="article:section" content="{{.Post.Section}}">
+	<meta name="article:published_time" content="{{.Post.PublishDate}}">
+	<meta name="article:author" content="{{.Post.Author}}">
+	<meta name="article:tag" content="{{join .Post.Keywords ", "}}">
+	<meta name="article:expiration_time" content="{{.Post.ExpirationTime}}">
+	<meta name="article:modified_time" content="{{.Post.ModifiedTime}}">
 </head>
 
 <body class="dark:bg-neutral-900">
 	<main class="mx-auto container">
 		{{template "nav" .}}
 
-		<article id="post" class=" md:mx-20 pb-6 overflow-auto mx-2 pt-2 prose prose-neutral prose-sm dark:prose-invert md:prose-md lg:prose-lg">
+		<article id="post"
+			class=" md:mx-20 pb-6 overflow-auto mx-2 pt-2 prose prose-neutral prose-sm dark:prose-invert md:prose-md lg:prose-lg">
 			<h1>{{.Post.Title}}</h1>
 			<h2>{{.Post.Subtitle}}</h2>
 			<p>{{ymd .Post.PublishDate}}</p>

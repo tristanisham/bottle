@@ -1,6 +1,10 @@
 ---
 title: Hello World!
 publish_date: 2022-07-13
+keywords: 
+    - "start"
+    - "test"
+    - "first post"
 ---
 
 This is my eight-billionth first blog post! *Yay!!!*

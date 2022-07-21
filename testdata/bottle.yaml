@@ -7,3 +7,9 @@ keywords:
     - seo
     - brewing
 theme: default
+url: "http://localhost:8080"
+locale: en_us
+fb_user_id: ""
+fb_app_id: ""
+tw_pub_handle: ""
+tw_author_handle: ""
