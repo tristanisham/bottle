@@ -149,7 +149,7 @@ func Start(multiProc bool) {
 		}
 
 		sort.Slice(posts, func(i, j int) bool {
-			return posts[i].PublishDate.Before(posts[j].PublishDate)
+			return posts[i].PublishDate.After(posts[j].PublishDate)
 		})
 
 		return c.Render("index", fiber.Map{
