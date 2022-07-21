@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"git.sr.ht/~atalocke/bottle/cli"
+	"github.com/tristanisham/bottle/cli"
 )
 
 func main() {

@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"git.sr.ht/~atalocke/bottle/server"
+	"github.com/tristanisham/bottle/server"
 	"gopkg.in/yaml.v3"
 )
 

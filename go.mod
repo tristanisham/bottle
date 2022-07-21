@@ -1,4 +1,4 @@
-module git.sr.ht/~atalocke/bottle
+module github.com/tristanisham/bottle
 
 go 1.18
 

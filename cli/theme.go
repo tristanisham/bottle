@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"git.sr.ht/~atalocke/bottle/server"
+	"github.com/tristanisham/bottle/server"
 	"gopkg.in/yaml.v3"
 )
 
