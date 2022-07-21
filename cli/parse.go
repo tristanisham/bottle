@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"git.sr.ht/~atalocke/bottle/server"
 	"gopkg.in/yaml.v3"
@@ -81,8 +82,21 @@ func Parse(args []string) error {
 	case "serve":
 		// Starts webserver using $BOTTLE_PORT, config.Port, or 8080 in that order.
 		// Watches for file changes so users don't have to restart their blog everytime they add a new post.
-		server.Start()
-	case "help", "--h", "-h":
+		options := make([]string, 0)
+		if len(args) >= 2 {
+			options = append(options, args[1:]...)
+		}
+		multi_proc_server := false
+		for _, opt := range options {
+			if strings.Contains(opt, "-") {
+				if strings.Contains(opt, "j") {
+					multi_proc_server = true
+				}
+			}
+		}
+
+		server.Start(multi_proc_server)
+	case "help", "--h", "-h", "version":
 		Help()
 	}
 	return nil

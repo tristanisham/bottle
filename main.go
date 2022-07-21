@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	if err := cli.Parse( os.Args[1:]); err != nil {
+	if err := cli.Parse(os.Args[1:]); err != nil {
 		log.Fatalln(err)
 	}
 }

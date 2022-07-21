@@ -15,6 +15,9 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/compress"
+	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/requestid"
 	"github.com/gofiber/template/html"
 	"gopkg.in/yaml.v3"
 )
@@ -42,7 +45,7 @@ func (s *server) Build(path string) error {
 	return nil
 }
 
-func Start() {
+func Start(multiProc bool) {
 
 	server := server{
 		settings: Settings{},
@@ -74,6 +77,7 @@ func Start() {
 	// \  /\  /  __/ |_) | /\__/ /  __/ |   \ V /  __/ |
 	//  \/  \/ \___|_.__/  \____/ \___|_|    \_/ \___|_|
 
+
 	engine := html.New(filepath.Join(cwd, "themes", server.settings.Theme, "templates"), ".html").Reload(true)
 	engine.AddFunc("html", func(copy string) template.HTML {
 		return template.HTML(copy)
@@ -85,7 +89,21 @@ func Start() {
 
 	app := fiber.New(fiber.Config{
 		Views: engine,
+		ServerHeader: "Bottle",
+		AppName: fmt.Sprint("Bottle ", "v0.0.4"),
+		Prefork: multiProc,
 	})
+
+	// Middleware 
+	app.Use(requestid.New())
+	app.Use(logger.New(logger.Config{
+		Format:     "${pid} ${status} - ${method} ${path}\n",
+		TimeFormat: "02-Jan-2006",
+		TimeZone:   "America/New_York",
+	}))
+	app.Use(compress.New())
+
+	// End middleware
 
 	app.Static("/", filepath.Join(cwd, "public"))
 	app.Static("/", filepath.Join(cwd, "themes", server.settings.Theme, "public"))
