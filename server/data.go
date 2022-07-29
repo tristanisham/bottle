@@ -84,24 +84,23 @@ func (s *server) render(file watcher.Event) {
 
 type Post struct {
 	Title          string    `json:"title" yaml:"title"`
-	Subtitle       string    `json:"subtitle" yaml:"subtitle"`
-	Author         string    `json:"author" yaml:"author"`
+	Subtitle       string    `json:"subtitle" yaml:"subtitle,omitempty"`
+	Author         string    `json:"author" yaml:"author,omitempty"`
 	Description    string    `json:"description" yaml:"description"`
 	Keywords       []string  `json:"keywords" yaml:"keywords"`
-	SiteImg        string    `json:"site_img" yaml:"site_img"`
-	Body           string    `json:"body" yaml:"body"`
-	Slug           string    `json:"slug" yaml:"slug"`
+	HeaderImg      string    `json:"header_img" yaml:"header_img,omitempty"`
+	Body           string    `json:"body" yaml:"body,omitempty"`
+	Slug           string    `json:"slug" yaml:"slug,omitempty"`
 	PublishDate    time.Time `json:"publish_date" yaml:"publish_date"`
-	OgVideo        string    `json:"og_video" yaml:"og_video"`
-	Section        string    `json:"section" yaml:"section"`
-	ModifiedTime   time.Time `json:"modifiedTime" yaml:"modifiedTime"`
-	ExpirationTime time.Time `json:"expirationTime" yaml:"expirationTime"`
+	OgVideo        string    `json:"og_video" yaml:"og_video,omitempty"`
+	Section        string    `json:"section" yaml:"section,omitempty"`
+	ModifiedTime   time.Time `json:"modifiedTime" yaml:"modifiedTime,omitempty"`
+	ExpirationTime time.Time `json:"expirationTime" yaml:"expirationTime,omitempty"`
 	// TwAuthorHandle is your publication's Twitter handle
-	TwAuthorHandle string `json:"tw_author_handle" yaml:"tw_author_handle"`
+	TwAuthorHandle string `json:"tw_author_handle" yaml:"tw_author_handle,omitempty"`
 	// TwPreviewImage defaults to SiteImg if not specified
-	TwPreviewImage string `json:"tw_preview_image" yaml:"tw_preview_image"`
-	TwVidAudPlayer string `json:"tw_vid_aud_player" yaml:"tw_vid_aud_player"`
-
+	TwPreviewImage string `json:"tw_preview_image" yaml:"tw_preview_image,omitempty"`
+	TwVidAudPlayer string `json:"tw_vid_aud_player" yaml:"tw_vid_aud_player,omitempty"`
 }
 
 func postFromFile(path string) (*Post, error) {
@@ -143,12 +142,12 @@ func postFromFile(path string) (*Post, error) {
 	result.Body = string(blackfriday.Run([]byte(strings.Join(body, "\n")))) // Not safe by design to let user's hack
 
 	if len(result.TwPreviewImage) == 0 {
-		result.TwPreviewImage = result.SiteImg
+		result.TwPreviewImage = result.HeaderImg
 	}
 
 	if result.PublishDate.IsZero() {
 		result.PublishDate = time.Now()
 	}
-	
+
 	return &result, nil
 }
