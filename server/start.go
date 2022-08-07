@@ -92,7 +92,7 @@ func Start(multiProc bool) {
 	app := fiber.New(fiber.Config{
 		Views:        engine,
 		ServerHeader: "Bottle",
-		AppName:      fmt.Sprint("Bottle ", "v0.0.6"),
+		AppName:      fmt.Sprint("Bottle ", "v0.0.7"),
 		Prefork:      multiProc,
 	})
 
