@@ -9,7 +9,6 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"sort"
 	"strings"
 	"sync"
 	"time"
@@ -19,6 +18,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/requestid"
 	"github.com/gofiber/template/html"
+	"github.com/gorilla/feeds"
 	"gopkg.in/yaml.v3"
 )
 
@@ -92,7 +92,7 @@ func Start(multiProc bool) {
 	app := fiber.New(fiber.Config{
 		Views:        engine,
 		ServerHeader: "Bottle",
-		AppName:      fmt.Sprint("Bottle ", "v0.0.7"),
+		AppName:      fmt.Sprint("Bottle ", "v0.0.8"),
 		Prefork:      multiProc,
 	})
 
@@ -110,6 +110,57 @@ func Start(multiProc bool) {
 	app.Static("/", filepath.Join(cwd, "public"))
 	app.Static("/", filepath.Join(cwd, "themes", server.settings.Theme, "public"))
 
+	app.Get("/feed", func(c *fiber.Ctx) error {
+		now := time.Now()
+		server.mu.Lock()
+		defer server.mu.Unlock()
+		feed := &feeds.Feed{
+			Title:       server.settings.Title,
+			Link:        &feeds.Link{Href: server.settings.Url},
+			Description: server.settings.Description,
+			Author:      &feeds.Author{Name: server.settings.Author, Email: server.settings.Email},
+			Created:     now,
+		}
+
+		posts := server.router.GetPosts()
+		for _, post := range posts {
+			feed.Items = append(feed.Items, &feeds.Item{
+				Title:       post.Title,
+				Link:        &feeds.Link{Href: fmt.Sprintf("%s/%s", server.settings.Url, post.Slug)},
+				Author:      &feeds.Author{Name: post.Author},
+				Description: post.Description,
+				Created:     post.PublishDate,
+			})
+		}
+
+		atom, err := feed.ToAtom()
+		if err != nil {
+			return err
+		}
+
+		rss, err := feed.ToRss()
+		if err != nil {
+			return err
+		}
+
+		json, err := feed.ToJSON()
+		if err != nil {
+			return err
+		}
+
+		headers := c.GetReqHeaders()
+		switch headers["Accept"] {
+		case "application/json":
+			return c.JSON(json)
+		case "application/rss+xml":
+			return c.SendString(rss)
+		case "application/atom+xml":
+			return c.SendString(atom)
+		}
+
+		return c.SendString(rss)
+	})
+
 	app.Get("/:slug", func(c *fiber.Ctx) error {
 		slug := url.PathEscape(c.Params("slug"))
 		server.mu.Lock()
@@ -124,10 +175,9 @@ func Start(multiProc bool) {
 				"Post":        val,
 				"TwPubHandle": server.settings.TwPubHandle,
 				"URL":         fmt.Sprintf("%s/%s", server.settings.Url, slug),
-				"Locale": server.settings.Locale,
-				"FbUserId": server.settings.FbUserId,
-				"FbAppId": server.settings.FbAppId,
-
+				"Locale":      server.settings.Locale,
+				"FbUserId":    server.settings.FbUserId,
+				"FbAppId":     server.settings.FbAppId,
 			})
 		}
 
@@ -143,14 +193,16 @@ func Start(multiProc bool) {
 	})
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		posts := make([]Post, 0)
-		for _, post := range server.router {
-			posts = append(posts, post)
-		}
+		// posts := make([]Post, 0)
+		// for _, post := range server.router {
+		// 	posts = append(posts, post)
+		// }
 
-		sort.Slice(posts, func(i, j int) bool {
-			return posts[i].PublishDate.After(posts[j].PublishDate)
-		})
+		// sort.Slice(posts, func(i, j int) bool {
+		// 	return posts[i].PublishDate.After(posts[j].PublishDate)
+		// })
+
+		posts := server.router.GetPosts()
 
 		return c.Render("index", fiber.Map{
 			"Title":       server.settings.Title,

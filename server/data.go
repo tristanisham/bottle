@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"sync"
 	"time"
@@ -17,6 +18,7 @@ import (
 type Settings struct {
 	Title       string   `json:"title" yaml:"title"`
 	Author      string   `json:"author" yaml:"author"`
+	Email       string   `json:"email" yaml:"email"`
 	Description string   `json:"description" yaml:"description"`
 	Keywords    []string `json:"keywords" yaml:"keywords"`
 	Theme       string   `json:"theme" yaml:"theme"`
@@ -50,9 +52,24 @@ func LoadSettings() (*Settings, error) {
 	return &settings, nil
 }
 
+type Router map[string]Post
+
+func (r Router) GetPosts() []Post {
+	posts := make([]Post, 0)
+	for _, post := range r {
+		posts = append(posts, post)
+	}
+
+	sort.Slice(posts, func(i, j int) bool {
+		return posts[i].PublishDate.After(posts[j].PublishDate)
+	})
+
+	return posts
+}
+
 type server struct {
 	settings Settings
-	router   map[string]Post
+	router   Router
 	mu       sync.Mutex
 }
 
