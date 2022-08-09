@@ -17,7 +17,7 @@ func Parse(args []string) error {
 	}
 
 	switch args[0] {
-	case "init":
+	case "init", "reset":
 		// Creates the default directories for the program to function.
 		//	* posts
 		//	* public
@@ -98,6 +98,9 @@ func Parse(args []string) error {
 		server.Start(multi_proc_server)
 	case "help", "--h", "-h", "version":
 		Help()
+
+	// case "upgrade":
+
 	}
 	return nil
 }
