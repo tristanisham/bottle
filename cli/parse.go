@@ -99,8 +99,8 @@ func Parse(args []string) error {
 	case "help", "--h", "-h", "version":
 		Help()
 
-	case "upgrade":
-		Upgrade()
+	// case "upgrade":
+	// 	Upgrade()
 	}
 	return nil
 }
