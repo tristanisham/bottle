@@ -11,9 +11,10 @@ The friendliest blogging engine
 
 ## Installation
 
-    1. Download the platform specific binary from the release page.
-    2. Place bottle on path
-    3. Get writing!
+If you're on a *nix system:
+```sh
+$ curl https://bottle.quest/install | bash
+```
     
 ## Features
 
