@@ -19,6 +19,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/requestid"
 	"github.com/gofiber/template/html"
 	"github.com/gorilla/feeds"
+	"github.com/tristanisham/bottle/utils"
 	"gopkg.in/yaml.v3"
 )
 
@@ -92,7 +93,7 @@ func Start(multiProc bool) {
 	app := fiber.New(fiber.Config{
 		Views:        engine,
 		ServerHeader: "Bottle",
-		AppName:      fmt.Sprint("Bottle ", "v0.0.8"),
+		AppName:      fmt.Sprint("Bottle ", utils.VERSION),
 		Prefork:      multiProc,
 	})
 

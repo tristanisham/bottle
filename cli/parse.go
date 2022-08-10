@@ -100,7 +100,7 @@ func Parse(args []string) error {
 		Help()
 
 	// case "upgrade":
-
+	// 	Upgrade()
 	}
 	return nil
 }
