@@ -55,5 +55,5 @@ fi
 echo
 echo "Append the following to your $HOME/.profile or $HOME/.bash_rc"
 echo
-echo -e "export PATH=\$PATH:$HOME/.bottle"
+echo -e "export PATH=\$PATH:\$HOME/.bottle"
 echo
