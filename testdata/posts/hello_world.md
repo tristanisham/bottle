@@ -5,6 +5,7 @@ keywords:
     - "start"
     - "test"
     - "first post"
+preview_img: turtle.jpg
 ---
 
 This is my eight-billionth first blog post! *Yay!!!*

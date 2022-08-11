@@ -16,35 +16,50 @@
 	<main class=" mx-auto container">
 		{{template "nav" .}}
 
-		<div class="pt-2 mx-20">
-			<div class="flex flex-col w-full">			  
-			{{range .Posts}}
-			<article id="post"
-				class=" md:mx-20 pb-6 overflow-auto mx-2 pt-2 prose prose-neutral prose-sm dark:prose-invert md:prose-md lg:prose-lg">
-				<div class="card lg:card-side bg-base-100 shadow-xl">
-					<figure><img src="{{.HeaderImg}}" alt="{{.Title}}"></figure>
-					<div class="card-body">
-						<h2 class="card-title">{{.Title}} <div class="badge badge-secondary">{{ymd .PublishDate}}</div>
-						</h2>
-						<p>{{.Description}}</p>
-						<div class="card-actions">
-							<div class="justify-start">
+		<div class="pt-2 mx-6 md:mx-20">
+			<div class="flex flex-col w-full">
+				{{range .Posts}}
+				<article id="post"
+					class=" rounded md:mx-20 pb-6 overflow-auto pt-2 prose prose-neutral prose-sm dark:prose-invert md:prose-md lg:prose-lg">
+					<div class="card p-2 md:card-side bg-neutral-focus shadow-xl">
+						{{if .PreviewImg}}
+						<figure id="previewImg" class="">
+							<img src="{{.PreviewImg}}" alt="{{.Title}}" class="rounded-xl" />
+						</figure>
+						{{end}}
+
+						<div class="card-body">
+							<h2 class="card-title">{{.Title}}</h2>
+							<p>{{.Description}}</p>
+							{{if .PreviewImg}}
+							<div class="card-actions justify-center md:justify-end">
 								{{range .Keywords}}
-								<div class="badge badge-outline">{{.}}</div>
+								<div class="badge badge-outline hover:badge-outline hover:badge-secondary">{{.}}</div>
 								{{end}}
 							</div>
-							<div class="justify-end">
-								<a href="/{{.Slug}}"><button class="btn btn-primary">Read Now</button></a>
+							<div class="card-actions justify-center md:justify-end pt-2">
+								<a href="/{{.Slug}}" class="btn btn-primary">Read Now</a>
 							</div>
-
+							{{else}}
+							<div class="card-actions">
+								<span class=" align-bottom justify-center md:justify-start">
+									{{range .Keywords}}
+									<div class="badge badge-outline hover:badge-outline hover:badge-secondary">{{.}}
+									</div>
+									{{end}}
+								</span>
+								<span class=" justify-center md:justify-end md:pl-16">
+									<a href="/{{.Slug}}" class="btn btn-primary">Read Now</a>
+								</span>
+							</div>
+							{{end}}
 						</div>
 					</div>
-				</div>
-			</article>
-			<!-- <div class="divider"></div>  -->
+				</article>
+				<!-- <div class="divider"></div>  -->
 
-			{{end}}
-		</div>
+				{{end}}
+			</div>
 		</div>
 
 	</main>
@@ -54,5 +69,7 @@
 
 	</style>
 </body>
+
+
 
 </html>

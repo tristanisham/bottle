@@ -106,6 +106,7 @@ type Post struct {
 	Description    string    `json:"description" yaml:"description"`
 	Keywords       []string  `json:"keywords" yaml:"keywords"`
 	HeaderImg      string    `json:"header_img" yaml:"header_img,omitempty"`
+	PreviewImg     string    `json:"preview_img" yaml:"preview_img,omitempty"`
 	Body           string    `json:"body" yaml:"body,omitempty"`
 	Slug           string    `json:"slug" yaml:"slug,omitempty"`
 	PublishDate    time.Time `json:"publish_date" yaml:"publish_date"`

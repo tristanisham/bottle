@@ -6,7 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>{{.Post.Title}}</title>
-	<meta name="keywords" content="{{join .Post.Keywords ", "}}">
+	<meta name="keywords" content="{{join .Post.Keywords " , "}}">
 	<link rel="stylesheet" href="/style.css">
 	<link rel="shortcut icon" href="https://deno-avatar.deno.dev/avatar/7e23af.svg" type="image/x-icon">
 	<!-- Search Engine -->
@@ -39,7 +39,7 @@
 	<meta name="article:section" content="{{.Post.Section}}">
 	<meta name="article:published_time" content="{{.Post.PublishDate}}">
 	<meta name="article:author" content="{{.Post.Author}}">
-	<meta name="article:tag" content="{{join .Post.Keywords ", "}}">
+	<meta name="article:tag" content="{{join .Post.Keywords " , "}}">
 	<meta name="article:expiration_time" content="{{.Post.ExpirationTime}}">
 	<meta name="article:modified_time" content="{{.Post.ModifiedTime}}">
 </head>
@@ -48,14 +48,24 @@
 	<main class="mx-auto container">
 		{{template "nav" .}}
 
-		<article id="post"
-			class=" md:mx-20 pb-6 overflow-auto mx-2 pt-2 prose prose-neutral prose-sm dark:prose-invert md:prose-md lg:prose-lg">
-			<h1>{{.Post.Title}}</h1>
+		<article id="post" class=" md:mx-20 pb-6 overflow-auto mx-2 pt-2 ">
+			<!-- <h1>{{.Post.Title}}</h1>
 			<h2>{{.Post.Subtitle}}</h2>
-			<p>{{ymd .Post.PublishDate}}</p>
-			<hr>
-			<div class="">
-				{{html .Post.Body}}
+			<p>{{ymd .Post.PublishDate}}</p> -->
+			<div class="hero bg-base-200 py-4 mb-2">
+				<div class="hero-content flex-col lg:flex-row-reverse">
+					<img src="https://placeimg.com/260/400/arch" class="max-w-sm rounded-lg shadow-2xl" />
+					<div>
+						<h1 class="text-5xl font-bold">{{.Title}}</h1>
+						<p class="py-6">{{.Subtitle}}</p>
+						<!-- <button class="btn btn-primary">Get Started</button> -->
+					</div>
+				</div>
+			</div>
+			<div class="flex items-center justify-center">
+				<div class="pt-2 prose prose-neutral prose-sm prose-invert md:prose-md lg:prose-lg">
+					{{html .Post.Body}}
+				</div>
 			</div>
 		</article>
 	</main>

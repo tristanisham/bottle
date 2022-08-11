@@ -162,6 +162,8 @@ func Start(multiProc bool) {
 		return c.SendString(rss)
 	})
 
+	app.Get("/feed.:datatype", FeedType(&server))
+
 	app.Get("/:slug", func(c *fiber.Ctx) error {
 		slug := url.PathEscape(c.Params("slug"))
 		server.mu.Lock()
