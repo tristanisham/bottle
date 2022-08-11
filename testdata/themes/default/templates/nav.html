@@ -1,39 +1,24 @@
-<nav class="top-0 z-50 sticky flex flex-wrap items-center justify-between px-2 py-3 bg-neutral-900 mb-3">
-    <div class="container px-4 mx-auto flex flex-wrap items-center justify-between">
-        <div class="w-full relative flex justify-between lg:w-auto  px-4 lg:static lg:block lg:justify-start">
-            <a class="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white"
-                href="/">
-                {{.Title}}
-            </a>
-            <button
-                class="cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
-                type="button">
-                <span class="block relative w-6 h-px rounded-sm bg-white"></span>
-                <span class="block relative w-6 h-px rounded-sm bg-white mt-1"></span>
-                <span class="block relative w-6 h-px rounded-sm bg-white mt-1"></span>
-            </button>
-        </div>
-        <div class="lg:flex flex-grow items-center" id="example-navbar-warning">
-            <ul class="flex flex-col lg:flex-row list-none ml-auto">
-                <li class="nav-item">
-                    <a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
-                        href="/feed">
-                        Feed
-                    </a>
-                </li>
-                <!-- <li class="nav-item">
-                    <a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
-                        href="#pablo">
-                        Profile
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
-                        href="#pablo">
-                        Setting
-                    </a>
-                </li> -->
-            </ul>
-        </div>
+<div class="navbar bg-base-100 sticky top-0 z-50">
+    <div class="flex-1">
+        <a class="btn btn-ghost normal-case text-xl" href="/">{{.Title}}</a>
     </div>
-</nav>
+    <div class="flex-none">
+        <ul class="menu menu-horizontal p-0">
+            <li><a>Item 1</a></li>
+            <li tabindex="0">
+                <a>
+                    Parent
+                    <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                        viewBox="0 0 24 24">
+                        <path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
+                    </svg>
+                </a>
+                <ul class="p-2 bg-base-100">
+                    <li><a>Submenu 1</a></li>
+                    <li><a>Submenu 2</a></li>
+                </ul>
+            </li>
+            <li><a>Item 3</a></li>
+        </ul>
+    </div>
+</div>

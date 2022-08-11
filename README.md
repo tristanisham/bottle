@@ -13,7 +13,7 @@ The friendliest blogging engine
 
 If you're on a *nix system:
 ```sh
-$ curl https://bottle.quest/install | bash
+$ curl https://bottle.quest/install.sh | bash
 ```
     
 ## Features

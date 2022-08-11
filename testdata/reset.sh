@@ -1,0 +1,2 @@
+../bottle reset
+../bottle serve

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="business">
 
 <head>
 	<meta charset="UTF-8">
@@ -12,25 +12,39 @@
 	<link rel="shortcut icon" href="https://deno-avatar.deno.dev/avatar/7e23af.svg" type="image/x-icon">
 </head>
 
-<body class="bg-neutral-900">
+<body class="">
 	<main class=" mx-auto container">
 		{{template "nav" .}}
 
-		<div class="pt-2">
+		<div class="pt-2 mx-20">
+			<div class="flex flex-col w-full">			  
 			{{range .Posts}}
 			<article id="post"
 				class=" md:mx-20 pb-6 overflow-auto mx-2 pt-2 prose prose-neutral prose-sm dark:prose-invert md:prose-md lg:prose-lg">
-				<a href="/{{.Slug}}">
-					<h1>{{.Title}}</h1>
-				</a>
-				<h2>{{.Subtitle}}</h2>
-				<p>{{ymd .PublishDate}}</p>
-				<hr>
-				<div class="">
-					{{html .Body}}
+				<div class="card lg:card-side bg-base-100 shadow-xl">
+					<figure><img src="{{.HeaderImg}}" alt="{{.Title}}"></figure>
+					<div class="card-body">
+						<h2 class="card-title">{{.Title}} <div class="badge badge-secondary">{{ymd .PublishDate}}</div>
+						</h2>
+						<p>{{.Description}}</p>
+						<div class="card-actions">
+							<div class="justify-start">
+								{{range .Keywords}}
+								<div class="badge badge-outline">{{.}}</div>
+								{{end}}
+							</div>
+							<div class="justify-end">
+								<a href="/{{.Slug}}"><button class="btn btn-primary">Read Now</button></a>
+							</div>
+
+						</div>
+					</div>
 				</div>
 			</article>
+			<!-- <div class="divider"></div>  -->
+
 			{{end}}
+		</div>
 		</div>
 
 	</main>
