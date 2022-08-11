@@ -54,10 +54,12 @@
 			<p>{{ymd .Post.PublishDate}}</p> -->
 			<div class="hero bg-base-200 py-4 mb-2">
 				<div class="hero-content flex-col lg:flex-row-reverse">
-					<img src="https://placeimg.com/260/400/arch" class="max-w-sm rounded-lg shadow-2xl" />
+					{{if .Post.HeaderImg}}
+					<img src="{{.Post.HeaderImg}}" class="max-w-sm rounded-lg shadow-2xl" />
+					{{end}}
 					<div>
-						<h1 class="text-5xl font-bold">{{.Title}}</h1>
-						<p class="py-6">{{.Subtitle}}</p>
+						<h1 class="text-5xl font-bold">{{.Post.Title}}</h1>
+						<h2 class="py-6 text-3xl font-bold">{{.Post.Subtitle}}</p>
 						<!-- <button class="btn btn-primary">Get Started</button> -->
 					</div>
 				</div>
