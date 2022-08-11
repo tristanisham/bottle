@@ -78,7 +78,7 @@ func Start(multiProc bool) {
 	// \  /\  /  __/ |_) | /\__/ /  __/ |   \ V /  __/ |
 	//  \/  \/ \___|_.__/  \____/ \___|_|    \_/ \___|_|
 
-	engine := html.New(filepath.Join(cwd, "themes", server.settings.Theme, "templates"), ".html")
+	engine := html.New(filepath.Join(cwd, "themes", server.settings.Theme, "templates"), ".html").Reload(true)
 	engine.AddFunc("html", func(copy string) template.HTML {
 		return template.HTML(copy)
 	})
@@ -196,15 +196,7 @@ func Start(multiProc bool) {
 	})
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		// posts := make([]Post, 0)
-		// for _, post := range server.router {
-		// 	posts = append(posts, post)
-		// }
-
-		// sort.Slice(posts, func(i, j int) bool {
-		// 	return posts[i].PublishDate.After(posts[j].PublishDate)
-		// })
-
+		
 		posts := server.router.GetPosts()
 
 		return c.Render("index", fiber.Map{
